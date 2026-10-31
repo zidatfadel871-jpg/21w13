@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النشاط الرياضي - جامعة فلسطين التقنية خضوري</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Cairo & Tajawal) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0d5c91',
+                            darkblue: '#093a5e',
+                            green: '#439d28',
+                            lightgreen: '#86cc29',
+                            gradientStart: '#0d5c91',
+                            gradientEnd: '#439d28'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-gradient {
+            background: linear-gradient(135deg, #0d5c91 0%, #134675 50%, #439d28 100%);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #0d5c91, #439d28);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(13, 92, 145, 0.2);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0d5c91;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-gray-800">
+
+    <!-- TOP HEADER / NAVBAR -->
+    <header class="bg-white shadow-md sticky top-0 z-40 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Logo and College Info -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-blue-900 via-brand-blue to-brand-green rounded-xl p-1 shadow-md">
+                    <!-- Stylized Vector SVG matching the uploaded logo design -->
+                    <svg class="w-full h-full text-white" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="85" stroke="url(#paint0_linear)" stroke-width="12" stroke-dasharray="12 6" />
+                        <path d="M70 50 C 90 20, 150 40, 160 80 C 170 120, 120 160, 80 160 C 40 160, 20 110, 50 80" stroke="#86cc29" stroke-width="10" stroke-linecap="round" fill="none"/>
+                        <!-- Runner Silhouette -->
+                        <path d="M115 45 C118 45 122 42 122 38 C122 34 118 31 115 31 C111 31 108 34 108 38 C108 42 111 45 115 45 Z M140 65 L125 50 L105 58 L90 48 M105 58 L95 80 L115 95 L110 125 M95 80 L75 90 M115 95 L135 115 L145 140" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="paint0_linear" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#0d5c91"/>
+                                <stop offset="1" stop-color="#439d28"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black text-brand-darkblue tracking-wide leading-tight">النشاط الرياضي</h1>
+                    <p class="text-xs sm:text-sm font-semibold text-gray-600">جامعة فلسطين التقنية خضوري</p>
+                    <p class="text-xs text-brand-green font-bold">(كلية التربية الرياضية وعلوم الحركة)</p>
+                </div>
+            </div>
+
+            <!-- User Status & Auth Buttons -->
+            <div class="flex items-center gap-3">
+                <div id="userBadge" class="hidden items-center gap-2 bg-blue-50 border border-blue-200 text-brand-blue px-3 py-1.5 rounded-lg text-sm font-bold">
+                    <i class="fa-solid fa-user-shield text-brand-green"></i>
+                    <span id="userNameDisplay">المسؤول</span>
+                    <span id="userRoleTag" class="text-xs bg-brand-blue text-white px-2 py-0.5 rounded-full">أدمن</span>
+                </div>
+
+                <button id="adminPanelBtn" onclick="toggleAdminView()" class="hidden bg-brand-green hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition shadow-sm items-center gap-2">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>لوحة التحكم</span>
+                </button>
+
+                <button id="loginBtn" onclick="openLoginModal()" class="bg-brand-blue hover:bg-brand-darkblue text-white font-bold px-4 py-2 rounded-lg text-sm transition shadow flex items-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>تسجيل الدخول</span>
+                </button>
+
+                <button id="logoutBtn" onclick="logout()" class="hidden bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition shadow flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>خروج</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO / BANNER SECTION -->
+    <section class="custom-gradient text-white py-8 px-4 shadow-inner relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <h2 class="text-2xl sm:text-4xl font-black mb-2">جدول المحاضرات والأنشطة الرياضية بالمرافق</h2>
+            <p class="text-sm sm:text-base text-emerald-100 max-w-2xl mx-auto font-medium">
+                استعرض جميع مواعيد المحاضرات التدريبية، الأنشطة، وأوقات الفراغ في جميع الملاعب والصالات الرياضية التابعة للكلية.
+            </p>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- PUBLIC VIEW SECTION (Day & Facility Filters) -->
+        <section id="publicView" class="space-y-6">
+            
+            <!-- FILTERS CONTAINER -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-6">
+                
+                <!-- 1. DAY SELECTOR (الأيام) -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <i class="fa-regular fa-calendar-days text-brand-blue"></i>
+                        <span>اختر اليوم:</span>
+                    </label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2" id="daysContainer">
+                        <!-- Days injected dynamically -->
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                <!-- 2. FACILITY SELECTOR (المرافق) -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="block text-sm font-bold text-gray-700 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-brand-green"></i>
+                            <span>اختر المرفق الرياضي:</span>
+                        </label>
+                        <span id="activeFacilityCount" class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full"></span>
+                    </div>
+                    <div class="flex flex-wrap gap-2" id="facilitiesContainer">
+                        <!-- Facilities injected dynamically -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ACTIVE SELECTION SUMMARY & SEARCH -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-emerald-50/60 border border-emerald-100 rounded-xl p-4">
+                <div>
+                    <h3 class="font-extrabold text-brand-darkblue text-lg flex items-center gap-2">
+                        <span id="currentDayText">السبت</span>
+                        <span class="text-gray-400">•</span>
+                        <span id="currentFacilityText" class="text-brand-green">جميع المرافق</span>
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-0.5" id="resultsCountText">جاري تحميل البيانات...</p>
+                </div>
+                
+                <!-- Search input -->
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="searchInput" oninput="renderSchedule()" placeholder="بحث باسم المحاضرة أو المحاضر..." class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-sm"></i>
+                </div>
+            </div>
+
+            <!-- SCHEDULE GRID / CARDS DISPLAY -->
+            <div id="scheduleGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Schedule cards injected dynamically -->
+            </div>
+
+            <!-- EMPTY STATE -->
+            <div id="emptyState" class="hidden bg-white rounded-2xl border border-dashed border-gray-300 p-12 text-center">
+                <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-calendar-xmark"></i>
+                </div>
+                <h4 class="text-lg font-bold text-gray-700 mb-1">لا توجد محاضرات أو أوقات مسجلة</h4>
+                <p class="text-sm text-gray-500">جرب اختيار يوم آخر أو مرفق رياضي مختلف.</p>
+            </div>
+
+        </section>
+
+
+        <!-- ADMIN / ASSISTANT CONTROL PANEL SECTION -->
+        <section id="adminView" class="hidden space-y-8">
+            
+            <div class="bg-gradient-to-r from-brand-darkblue to-brand-blue text-white rounded-2xl p-6 shadow-lg flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-brand-lightgreen"></i>
+                        <span>لوحة إدارة المرافق والمحاضرات</span>
+                    </h2>
+                    <p class="text-sm text-blue-100 mt-1">يمكنك من هنا إضافة المواعيد، التعديل، إضافة المرافق، وإدارة المساعدين.</p>
+                </div>
+                <button onclick="toggleAdminView()" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-bold border border-white/20 transition flex items-center gap-2">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>عرض واجهة الزائر</span>
+                </button>
+            </div>
+
+            <!-- TABS FOR ADMIN MANAGEMENT -->
+            <div class="border-b border-gray-200 flex gap-4 text-sm font-bold">
+                <button id="tabScheduleBtn" onclick="switchAdminTab('schedules')" class="pb-3 border-b-2 border-brand-blue text-brand-blue flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    <span>إدارة المواعيد والمحاضرات</span>
+                </button>
+                <button id="tabFacilityBtn" onclick="switchAdminTab('facilities')" class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-brand-blue flex items-center gap-2">
+                    <i class="fa-solid fa-building-circle-plus"></i>
+                    <span>إضافة مرفق جديد</span>
+                </button>
+                <button id="tabAssistantsBtn" onclick="switchAdminTab('assistants')" class="hidden pb-3 border-b-2 border-transparent text-gray-500 hover:text-brand-blue flex items-center gap-2">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>إدارة المساعدين (خاص بالمسؤول)</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: ADD / EDIT SCHEDULE FORM & LIST -->
+            <div id="adminScheduleTab" class="space-y-6">
+                
+                <!-- Add New Schedule Card -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2" id="formScheduleTitle">
+                        <i class="fa-solid fa-plus-circle text-brand-green"></i>
+                        <span>إضافة موعد / محاضرة جديدة</span>
+                    </h3>
+                    
+                    <form id="scheduleForm" onsubmit="handleSaveSchedule(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <input type="hidden" id="schedId">
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">اليوم *</label>
+                            <select id="schedDay" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                                <option value="السبت">السبت</option>
+                                <option value="الأحد">الأحد</option>
+                                <option value="الإثنين">الإثنين</option>
+                                <option value="الثلاثاء">الثلاثاء</option>
+                                <option value="الأربعاء">الأربعاء</option>
+                                <option value="الخميس">الخميس</option>
+                                <option value="الجمعة">الجمعة</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">المرفق الرياضي *</label>
+                            <select id="schedFacility" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                                <!-- Dynamically filled -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">نوع الموعد *</label>
+                            <select id="schedType" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                                <option value="محاضرة">محاضرة دراسية</option>
+                                <option value="وقت فراغ">وقت فراغ (متاح للجميع)</option>
+                                <option value="نشاط / حجز">نشاط رياضي / حجز خاص</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">اسم المحاضرة / Activity Title *</label>
+                            <input type="text" id="schedTitle" required placeholder="مثال: كرة سلة (1) أو وقت فراغ للتمرين" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">اسم المحاضر / المشرف</label>
+                            <input type="text" id="schedLecturer" placeholder="مثال: د. أحمد محمود" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">وقت البدء *</label>
+                                <input type="time" id="schedStartTime" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">وقت الانتهاء *</label>
+                                <input type="time" id="schedEndTime" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2 lg:col-span-3 flex justify-end gap-2 mt-2">
+                            <button type="button" onclick="resetScheduleForm()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded-lg text-sm transition">
+                                إلغاء / تفريغ
+                            </button>
+                            <button type="submit" class="bg-brand-blue hover:bg-brand-darkblue text-white font-bold px-6 py-2 rounded-lg text-sm transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>حفظ الموعد</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Admin Schedule Table view for easy management -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 overflow-x-auto">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">قائمة المواعيد المسجلة بالنظام</h3>
+                    <table class="w-full text-right text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                <th class="p-3 font-bold">اليوم</th>
+                                <th class="p-3 font-bold">المرفق</th>
+                                <th class="p-3 font-bold">اسم المحاضرة / النشاط</th>
+                                <th class="p-3 font-bold">المحاضر</th>
+                                <th class="p-3 font-bold">التوقيت</th>
+                                <th class="p-3 font-bold">النوع</th>
+                                <th class="p-3 font-bold text-center">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminScheduleTableBody" class="divide-y divide-gray-100">
+                            <!-- Rows injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- TAB 2: ADD FACILITY -->
+            <div id="adminFacilityTab" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-xl">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-square-plus text-brand-green"></i>
+                        <span>إضافة مرفق رياضي جديد</span>
+                    </h3>
+                    <form onsubmit="handleAddFacility(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">اسم المرفق الرياضي الجديد *</label>
+                            <input type="text" id="newFacilityName" required placeholder="مثال: مسبح الكلية الأولمبي" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+                        <button type="submit" class="bg-brand-green hover:bg-emerald-700 text-white font-bold px-6 py-2 rounded-lg text-sm transition shadow flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>إضافة المرفق</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">المرافق الرياضية الحالية</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="adminFacilitiesList">
+                        <!-- Facility Items -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: ASSISTANTS MANAGEMENT (ADMIN ONLY) -->
+            <div id="adminAssistantsTab" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-xl">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-user-plus text-brand-blue"></i>
+                        <span>إضافة مساعد جديد</span>
+                    </h3>
+                    <form onsubmit="handleAddAssistant(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">اسم المساعد (الكامل) *</label>
+                            <input type="text" id="astName" required placeholder="مثال: د. سامي عبد الله" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">اسم المستخدم للدخول (Username) *</label>
+                            <input type="text" id="astUsername" required placeholder="مثال: assistant1" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">كلمة السر *</label>
+                            <input type="password" id="astPassword" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+                        <button type="submit" class="bg-brand-blue hover:bg-brand-darkblue text-white font-bold px-6 py-2 rounded-lg text-sm transition shadow flex items-center gap-2">
+                            <i class="fa-solid fa-user-check"></i>
+                            <span>اعتماد المساعد</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 overflow-x-auto">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">قائمة المساعدين المسجلين</h3>
+                    <table class="w-full text-right text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                <th class="p-3 font-bold">الاسم</th>
+                                <th class="p-3 font-bold">اسم المستخدم</th>
+                                <th class="p-3 font-bold">الصلاحية</th>
+                                <th class="p-3 font-bold text-center">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assistantsTableBody" class="divide-y divide-gray-100">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-darkblue text-white mt-12 py-6 border-t-4 border-brand-green">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-bold text-sm">جامعة فلسطين التقنية خضوري - كلية التربية الرياضية وعلوم الحركة</p>
+            <p class="text-xs text-emerald-200">نظام إدارة وجدولة الأنشطة والمرافق الرياضية © 2026</p>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative border border-gray-100 animate-fade-in">
+            <button onclick="closeLoginModal()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600 p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-blue-100 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-bold">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-black text-gray-800">تسجيل الدخول للنظام</h3>
+                <p class="text-xs text-gray-500 mt-1">خاص بالمسؤول والمساعدين لإدارة مواعيد المرافق</p>
+            </div>
+
+            <div id="loginAlert" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-bold text-center">
+                اسم المستخدم أو كلمة المرور غير صحيحة!
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">اسم المستخدم</label>
+                    <div class="relative">
+                        <input type="text" id="loginUsername" required placeholder="أدخل اسم المستخدم" class="w-full bg-gray-50 border border-gray-200 rounded-lg pr-3 pl-9 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        <i class="fa-solid fa-user absolute left-3 top-3 text-gray-400 text-sm"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">كلمة المرور</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" required placeholder="أدخل كلمة المرور" class="w-full bg-gray-50 border border-gray-200 rounded-lg pr-3 pl-9 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        <i class="fa-solid fa-key absolute left-3 top-3 text-gray-400 text-sm"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-blue hover:bg-brand-darkblue text-white font-bold py-2.5 rounded-lg text-sm transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>دخول</span>
+                </button>
+            </form>
+
+            <div class="mt-4 pt-4 border-t border-gray-100 text-center text-xs text-gray-400">
+                حساب المسؤول التجريبي: <span class="font-mono text-gray-600 font-bold">admin</span> / <span class="font-mono text-gray-600 font-bold">admin123</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- APPLICATION JAVASCRIPT LOGIC -->
+    <script>
+        // --- CONSTANTS & INITIAL DATA ---
+        const DAYS = ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+
+        const INITIAL_FACILITIES = [
+            'جميع المرافق',
+            'ملعب كرة السلة',
+            'ملعب كرة الطائرة',
+            'ملعب كرة التنس الأرضي',
+            'ملعب كرة اليد',
+            'الصالة الرياضية',
+            'صالة اللياقة البدنية',
+            'صالة تنس الطاولة',
+            'ملعب كرة القدم',
+            'مضمار ألعاب القوى',
+            'ميدان ألعاب القوى'
+        ];
+
+        // Seed Sample Schedule Data if not in Storage
+        const INITIAL_SCHEDULES = [
+            { id: '1', day: 'السبت', facility: 'ملعب كرة السلة', title: 'كرة سلة (1) - شعبة 1', lecturer: 'د. جمال شرف', startTime: '08:00', endTime: '10:00', type: 'محاضرة' },
+            { id: '2', day: 'السبت', facility: 'ملعب كرة السلة', title: 'وقت فراغ - تمرين حر', lecturer: 'مشرف الصالة', startTime: '10:00', endTime: '12:00', type: 'وقت فراغ' },
+            { id: '3', day: 'السبت', facility: 'ملعب كرة القدم', title: 'تدريب منتخب الجامعة لكرة القدم', lecturer: 'كابتن محمود قدورة', startTime: '14:00', endTime: '16:00', type: 'نشاط / حجز' },
+            { id: '4', day: 'الأحد', facility: 'صالة اللياقة البدنية', title: 'ألعاب قوى وبناء أجسام', lecturer: 'د. سامر أبوريدة', startTime: '09:30', endTime: '11:00', type: 'محاضرة' },
+            { id: '5', day: 'الأحد', facility: 'صالة تنس الطاولة', title: 'تنس طاولة متقدم', lecturer: 'أ. رانيا خليل', startTime: '11:00', endTime: '12:30', type: 'محاضرة' },
+            { id: '6', day: 'الإثنين', facility: 'ملعب كرة الطائرة', title: 'كرة طائرة (2)', lecturer: 'د. خالد زيود', startTime: '08:00', endTime: '10:00', type: 'محاضرة' },
+            { id: '7', day: 'الإثنين', facility: 'مضمار ألعاب القوى', title: 'لياقة وجري سريع', lecturer: 'د. سعيد كنعان', startTime: '10:00', endTime: '12:00', type: 'محاضرة' },
+            { id: '8', day: 'الثلاثاء', facility: 'ملعب كرة التنس الأرضي', title: 'تنس أرضي أساسيات', lecturer: 'أ. طارق حامد', startTime: '12:30', endTime: '14:00', type: 'محاضرة' },
+            { id: '9', day: 'الأربعاء', facility: 'الصالة الرياضية', title: 'جمباز وإعداد بدني', lecturer: 'د. منار قاسم', startTime: '09:00', endTime: '11:00', type: 'محاضرة' },
+            { id: '10', day: 'الخميس', facility: 'ميدان ألعاب القوى', title: 'رمي الرمح والجلة', lecturer: 'د. عمر يوسف', startTime: '08:30', endTime: '10:30', type: 'محاضرة' },
+            { id: '11', day: 'الخميس', facility: 'ملعب كرة اليد', title: 'وقت فراغ للطلاب', lecturer: 'متاح للجميع', startTime: '11:00', endTime: '14:00', type: 'وقت فراغ' }
+        ];
+
+        const DEFAULT_ADMIN = { username: 'admin', password: 'admin123', name: 'المسؤول الرئيسي', role: 'admin' };
+
+        // --- APP STATE ---
+        let currentDay = 'السبت';
+        let currentFacility = 'جميع المرافق';
+        let currentUser = null; // { username, role, name }
+
+        let facilities = JSON.parse(localStorage.getItem('khadoori_facilities')) || INITIAL_FACILITIES;
+        let schedules = JSON.parse(localStorage.getItem('khadoori_schedules')) || INITIAL_SCHEDULES;
+        let assistants = JSON.parse(localStorage.getItem('khadoori_assistants')) || [];
+
+        // Save State Helpers
+        function saveFacilities() { localStorage.setItem('khadoori_facilities', JSON.stringify(facilities)); }
+        function saveSchedules() { localStorage.setItem('khadoori_schedules', JSON.stringify(schedules)); }
+        function saveAssistants() { localStorage.setItem('khadoori_assistants', JSON.stringify(assistants)); }
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDaysSelector();
+            renderFacilitiesSelector();
+            renderSchedule();
+            populateFacilityDropdown();
+
+            // Check saved session
+            const savedUser = sessionStorage.getItem('khadoori_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserUI();
+            }
+        });
+
+        // --- PUBLIC VIEW RENDERERS ---
+
+        function renderDaysSelector() {
+            const container = document.getElementById('daysContainer');
+            container.innerHTML = DAYS.map(day => {
+                const isActive = day === currentDay;
+                return `
+                    <button onclick="selectDay('${day}')" 
+                        class="py-2.5 px-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                            isActive 
+                            ? 'bg-brand-blue text-white shadow-md ring-2 ring-brand-blue/30' 
+                            : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200'
+                        }">
+                        <i class="fa-regular fa-calendar-check text-xs ${isActive ? 'text-brand-lightgreen' : 'text-gray-400'}"></i>
+                        <span>${day}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderFacilitiesSelector() {
+            const container = document.getElementById('facilitiesContainer');
+            document.getElementById('activeFacilityCount').textContent = `${facilities.length - 1} مرفق متوفر`;
+
+            container.innerHTML = facilities.map((fac, idx) => {
+                const isActive = fac === currentFacility;
+                const isAll = idx === 0;
+                return `
+                    <button onclick="selectFacility('${fac}')" 
+                        class="py-2 px-3.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                            isActive 
+                            ? (isAll ? 'bg-brand-darkblue text-white shadow' : 'bg-brand-green text-white shadow') 
+                            : 'bg-white hover:bg-emerald-50 text-gray-700 border border-gray-200'
+                        }">
+                        <i class="${isAll ? 'fa-solid fa-border-all' : 'fa-solid fa-futbol'} ${isActive ? 'text-white' : 'text-brand-green'} text-xs"></i>
+                        <span>${fac}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectDay(day) {
+            currentDay = day;
+            renderDaysSelector();
+            renderSchedule();
+        }
+
+        function selectFacility(facility) {
+            currentFacility = facility;
+            renderFacilitiesSelector();
+            renderSchedule();
+        }
+
+        function renderSchedule() {
+            const grid = document.getElementById('scheduleGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            document.getElementById('currentDayText').textContent = currentDay;
+            document.getElementById('currentFacilityText').textContent = currentFacility;
+
+            // Filter logic
+            let filtered = schedules.filter(item => {
+                const matchDay = item.day === currentDay;
+                const matchFacility = (currentFacility === 'جميع المرافق') || (item.facility === currentFacility);
+                const matchSearch = !searchVal || 
+                                    item.title.toLowerCase().includes(searchVal) || 
+                                    (item.lecturer && item.lecturer.toLowerCase().includes(searchVal)) ||
+                                    item.facility.toLowerCase().includes(searchVal);
+                return matchDay && matchFacility && matchSearch;
+            });
+
+            document.getElementById('resultsCountText').textContent = `تم العثور على ${filtered.length} موعد/محاضرة`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(item => {
+                // Type styles
+                let typeBadgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
+                let iconClass = 'fa-book-open';
+                
+                if (item.type === 'وقت فراغ') {
+                    typeBadgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                    iconClass = 'fa-clock';
+                } else if (item.type === 'نشاط / حجز') {
+                    typeBadgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+                    iconClass = 'fa-trophy';
+                }
+
+                return `
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 right-0 left-0 h-1.5 ${item.type === 'وقت فراغ' ? 'bg-brand-green' : 'bg-brand-blue'}"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-3 gap-2">
+                                <span class="text-xs px-2.5 py-1 rounded-full border font-bold flex items-center gap-1 ${typeBadgeClass}">
+                                    <i class="fa-solid ${iconClass} text-[10px]"></i>
+                                    <span>${item.type}</span>
+                                </span>
+                                <span class="text-xs text-gray-500 font-semibold flex items-center gap-1">
+                                    <i class="fa-regular fa-clock text-gray-400"></i>
+                                    <span>${formatTime(item.startTime)} - ${formatTime(item.endTime)}</span>
+                                </span>
+                            </div>
+
+                            <h4 class="font-extrabold text-gray-800 text-base mb-2 leading-snug">${escapeHtml(item.title)}</h4>
+                            
+                            <div class="space-y-1.5 text-xs text-gray-600 font-medium">
+                                <div class="flex items-center gap-2 text-brand-darkblue">
+                                    <i class="fa-solid fa-location-dot text-brand-green w-4"></i>
+                                    <span class="font-bold">${escapeHtml(item.facility)}</span>
+                                </div>
+                                ${item.lecturer ? `
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-user-tie text-gray-400 w-4"></i>
+                                        <span>المحاضر/المشرف: <strong class="text-gray-700">${escapeHtml(item.lecturer)}</strong></span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        ${currentUser ? `
+                            <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end gap-2 text-xs">
+                                <button onclick="editSchedule('${item.id}')" class="px-3 py-1 bg-blue-50 text-brand-blue hover:bg-blue-100 font-bold rounded-md transition flex items-center gap-1">
+                                    <i class="fa-solid fa-pen"></i> تعديل
+                                </button>
+                                <button onclick="deleteSchedule('${item.id}')" class="px-3 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold rounded-md transition flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- AUTHENTICATION & LOGIN LOGIC ---
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginAlert').classList.add('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value.trim();
+
+            // Check Admin
+            if (u === DEFAULT_ADMIN.username && p === DEFAULT_ADMIN.password) {
+                currentUser = { username: u, role: 'admin', name: DEFAULT_ADMIN.name };
+                successLogin();
+                return;
+            }
+
+            // Check Assistants
+            const foundAst = assistants.find(a => a.username === u && a.password === p);
+            if (foundAst) {
+                currentUser = { username: u, role: 'assistant', name: foundAst.name };
+                successLogin();
+                return;
+            }
+
+            // Failed
+            document.getElementById('loginAlert').classList.remove('hidden');
+        }
+
+        function successLogin() {
+            sessionStorage.setItem('khadoori_user', JSON.stringify(currentUser));
+            closeLoginModal();
+            updateUserUI();
+            renderSchedule();
+            renderAdminScheduleTable();
+            renderAdminFacilitiesList();
+            renderAdminAssistantsTable();
+        }
+
+        function logout() {
+            currentUser = null;
+            sessionStorage.removeItem('khadoori_user');
+            updateUserUI();
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('publicView').classList.remove('hidden');
+            renderSchedule();
+        }
+
+        function updateUserUI() {
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userBadge = document.getElementById('userBadge');
+            const adminPanelBtn = document.getElementById('adminPanelBtn');
+
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                userBadge.classList.remove('hidden');
+                userBadge.classList.add('flex');
+                adminPanelBtn.classList.remove('hidden');
+                adminPanelBtn.classList.add('flex');
+
+                document.getElementById('userNameDisplay').textContent = currentUser.name;
+                const roleTag = document.getElementById('userRoleTag');
+                
+                if (currentUser.role === 'admin') {
+                    roleTag.textContent = 'مسؤول رئيسي';
+                    roleTag.className = 'text-xs bg-brand-blue text-white px-2 py-0.5 rounded-full';
+                    document.getElementById('tabAssistantsBtn').classList.remove('hidden');
+                } else {
+                    roleTag.textContent = 'مساعد';
+                    roleTag.className = 'text-xs bg-brand-green text-white px-2 py-0.5 rounded-full';
+                    document.getElementById('tabAssistantsBtn').classList.add('hidden');
+                }
+            } else {
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                userBadge.classList.add('hidden');
+                adminPanelBtn.classList.add('hidden');
+            }
+        }
+
+        // --- ADMIN PANEL CONTROLS & TABS ---
+
+        function toggleAdminView() {
+            const adminView = document.getElementById('adminView');
+            const publicView = document.getElementById('publicView');
+
+            if (adminView.classList.contains('hidden')) {
+                adminView.classList.remove('hidden');
+                publicView.classList.add('hidden');
+                renderAdminScheduleTable();
+                renderAdminFacilitiesList();
+                renderAdminAssistantsTable();
+            } else {
+                adminView.classList.add('hidden');
+                publicView.classList.remove('hidden');
+            }
+        }
+
+        function switchAdminTab(tabName) {
+            const tabSchedule = document.getElementById('adminScheduleTab');
+            const tabFacility = document.getElementById('adminFacilityTab');
+            const tabAssistants = document.getElementById('adminAssistantsTab');
+
+            const btnSchedule = document.getElementById('tabScheduleBtn');
+            const btnFacility = document.getElementById('tabFacilityBtn');
+            const btnAssistants = document.getElementById('tabAssistantsBtn');
+
+            // Hide all
+            tabSchedule.classList.add('hidden');
+            tabFacility.classList.add('hidden');
+            tabAssistants.classList.add('hidden');
+
+            btnSchedule.className = "pb-3 border-b-2 border-transparent text-gray-500 hover:text-brand-blue flex items-center gap-2";
+            btnFacility.className = "pb-3 border-b-2 border-transparent text-gray-500 hover:text-brand-blue flex items-center gap-2";
+            btnAssistants.className = "pb-3 border-b-2 border-transparent text-gray-500 hover:text-brand-blue flex items-center gap-2";
+
+            if (tabName === 'schedules') {
+                tabSchedule.classList.remove('hidden');
+                btnSchedule.className = "pb-3 border-b-2 border-brand-blue text-brand-blue font-bold flex items-center gap-2";
+            } else if (tabName === 'facilities') {
+                tabFacility.classList.remove('hidden');
+                btnFacility.className = "pb-3 border-b-2 border-brand-blue text-brand-blue font-bold flex items-center gap-2";
+            } else if (tabName === 'assistants') {
+                tabAssistants.classList.remove('hidden');
+                btnAssistants.className = "pb-3 border-b-2 border-brand-blue text-brand-blue font-bold flex items-center gap-2";
+            }
+        }
+
+        function populateFacilityDropdown() {
+            const select = document.getElementById('schedFacility');
+            // Exclude "جميع المرافق" from dropdown
+            const validFacilities = facilities.filter(f => f !== 'جميع المرافق');
+            select.innerHTML = validFacilities.map(f => `<option value="${f}">${f}</option>`).join('');
+        }
+
+        // --- SCHEDULE CRUD ---
+
+        function handleSaveSchedule(e) {
+            e.preventDefault();
+            const id = document.getElementById('schedId').value;
+            const day = document.getElementById('schedDay').value;
+            const facility = document.getElementById('schedFacility').value;
+            const type = document.getElementById('schedType').value;
+            const title = document.getElementById('schedTitle').value.trim();
+            const lecturer = document.getElementById('schedLecturer').value.trim();
+            const startTime = document.getElementById('schedStartTime').value;
+            const endTime = document.getElementById('schedEndTime').value;
+
+            if (id) {
+                // Edit
+                const index = schedules.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    schedules[index] = { id, day, facility, type, title, lecturer, startTime, endTime };
+                }
+            } else {
+                // Add New
+                const newObj = {
+                    id: Date.now().toString(),
+                    day, facility, type, title, lecturer, startTime, endTime
+                };
+                schedules.push(newObj);
+            }
+
+            saveSchedules();
+            resetScheduleForm();
+            renderSchedule();
+            renderAdminScheduleTable();
+            showToast('تم حفظ الموعد بنجاح!');
+        }
+
+        function editSchedule(id) {
+            const sched = schedules.find(s => s.id === id);
+            if (!sched) return;
+
+            document.getElementById('schedId').value = sched.id;
+            document.getElementById('schedDay').value = sched.day;
+            document.getElementById('schedFacility').value = sched.facility;
+            document.getElementById('schedType').value = sched.type;
+            document.getElementById('schedTitle').value = sched.title;
+            document.getElementById('schedLecturer').value = sched.lecturer || '';
+            document.getElementById('schedStartTime').value = sched.startTime;
+            document.getElementById('schedEndTime').value = sched.endTime;
+
+            document.getElementById('formScheduleTitle').innerHTML = `
+                <i class="fa-solid fa-pen-to-square text-brand-blue"></i>
+                <span>تعديل الموعد المسجل</span>
+            `;
+
+            // Switch view to admin panel if in public
+            document.getElementById('adminView').classList.remove('hidden');
+            document.getElementById('publicView').classList.add('hidden');
+            switchAdminTab('schedules');
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        function deleteSchedule(id) {
+            if (confirm('هل أنت تأكد من رغبتك في حذف هذا الموعد؟')) {
+                schedules = schedules.filter(s => s.id !== id);
+                saveSchedules();
+                renderSchedule();
+                renderAdminScheduleTable();
+                showToast('تم حذف الموعد.');
+            }
+        }
+
+        function resetScheduleForm() {
+            document.getElementById('scheduleForm').reset();
+            document.getElementById('schedId').value = '';
+            document.getElementById('formScheduleTitle').innerHTML = `
+                <i class="fa-solid fa-plus-circle text-brand-green"></i>
+                <span>إضافة موعد / محاضرة جديدة</span>
+            `;
+        }
+
+        function renderAdminScheduleTable() {
+            const tbody = document.getElementById('adminScheduleTableBody');
+            if (schedules.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-gray-400">لا توجد مواعيد مسجلة.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = schedules.map(item => `
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3 font-bold text-gray-800">${item.day}</td>
+                    <td class="p-3 text-brand-blue font-semibold">${item.facility}</td>
+                    <td class="p-3 font-medium">${escapeHtml(item.title)}</td>
+                    <td class="p-3 text-gray-600">${escapeHtml(item.lecturer || '-')}</td>
+                    <td class="p-3 dir-ltr text-right font-mono text-xs">${formatTime(item.startTime)} - ${formatTime(item.endTime)}</td>
+                    <td class="p-3">
+                        <span class="text-xs px-2 py-0.5 rounded ${item.type === 'وقت فراغ' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">
+                            ${item.type}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <button onclick="editSchedule('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mx-1">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button onclick="deleteSchedule('${item.id}')" class="text-rose-600 hover:text-rose-800 p-1 mx-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // --- FACILITY CRUD ---
+
+        function handleAddFacility(e) {
+            e.preventDefault();
+            const input = document.getElementById('newFacilityName');
+            const name = input.value.trim();
+
+            if (!name) return;
+            if (facilities.includes(name)) {
+                alert('هذا المرفق موجود بالفعل!');
+                return;
+            }
+
+            facilities.push(name);
+            saveFacilities();
+            input.value = '';
+            
+            renderFacilitiesSelector();
+            populateFacilityDropdown();
+            renderAdminFacilitiesList();
+            showToast('تمت إضافة المرفق الجديد!');
+        }
+
+        function deleteFacility(facilityName) {
+            if (facilityName === 'جميع المرافق') return;
+            if (confirm(`هل أنت تأكد من حذف مرفق "${facilityName}"؟`)) {
+                facilities = facilities.filter(f => f !== facilityName);
+                saveFacilities();
+                
+                if (currentFacility === facilityName) currentFacility = 'جميع المرافق';
+                
+                renderFacilitiesSelector();
+                populateFacilityDropdown();
+                renderAdminFacilitiesList();
+                renderSchedule();
+                showToast('تم حذف المرفق.');
+            }
+        }
+
+        function renderAdminFacilitiesList() {
+            const list = document.getElementById('adminFacilitiesList');
+            list.innerHTML = facilities.map(fac => {
+                const isDefaultAll = fac === 'جميع المرافق';
+                return `
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-futbol text-brand-green"></i>
+                            <span class="font-bold text-sm text-gray-800">${fac}</span>
+                        </div>
+                        ${!isDefaultAll ? `
+                            <button onclick="deleteFacility('${fac}')" class="text-rose-500 hover:text-rose-700 p-1 text-xs">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : '<span class="text-xs bg-gray-200 px-2 py-0.5 rounded text-gray-600">افتراضي</span>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- ASSISTANT MANAGEMENT (ADMIN ONLY) ---
+
+        function handleAddAssistant(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('عذراً، هذه الصلاحية للمسؤول الرئيسي فقط.');
+                return;
+            }
+
+            const name = document.getElementById('astName').value.trim();
+            const username = document.getElementById('astUsername').value.trim();
+            const password = document.getElementById('astPassword').value.trim();
+
+            if (username === 'admin' || assistants.some(a => a.username === username)) {
+                alert('اسم المستخدم هذا مستخدم مسبقاً، اختر اسم آخر.');
+                return;
+            }
+
+            assistants.push({ id: Date.now().toString(), name, username, password });
+            saveAssistants();
+
+            document.getElementById('astName').value = '';
+            document.getElementById('astUsername').value = '';
+            document.getElementById('astPassword').value = '';
+
+            renderAdminAssistantsTable();
+            showToast('تمت إضافة المساعد بنجاح.');
+        }
+
+        function deleteAssistant(id) {
+            if (!currentUser || currentUser.role !== 'admin') return;
+            if (confirm('هل أنت تأكد من إلغاء صلاحية هذا المساعد؟')) {
+                assistants = assistants.filter(a => a.id !== id);
+                saveAssistants();
+                renderAdminAssistantsTable();
+                showToast('تم حذف المساعد.');
+            }
+        }
+
+        function renderAdminAssistantsTable() {
+            const tbody = document.getElementById('assistantsTableBody');
+            if (assistants.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-gray-400">لا يوجد مساعدون مضافون حالياً.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = assistants.map(ast => `
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3 font-bold text-gray-800">${escapeHtml(ast.name)}</td>
+                    <td class="p-3 font-mono text-gray-600">${escapeHtml(ast.username)}</td>
+                    <td class="p-3"><span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-bold">مساعد</span></td>
+                    <td class="p-3 text-center">
+                        <button onclick="deleteAssistant('${ast.id}')" class="text-rose-600 hover:text-rose-800 p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // --- UTILITY FUNCTIONS ---
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            const [hours, minutes] = timeStr.split(':');
+            let h = parseInt(hours, 10);
+            const ampm = h >= 12 ? 'م' : 'ص';
+            h = h % 12 || 12;
+            return `${h}:${minutes} ${ampm}`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 left-5 bg-gray-900 text-white text-sm px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-2 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-brand-green"></i> <span>${message}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
